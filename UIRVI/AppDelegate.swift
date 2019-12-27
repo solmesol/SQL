@@ -13,9 +13,38 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    
+    var dbPath = ""
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        
+        
+        
+        
+        let docPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+        print(docPath)
+        
+        // MARK: - copy and attach file with xcode project
+        
+        self.dbPath = docPath + "/NIL.db"
+        
+        
+        if(!FileManager.default.fileExists(atPath: self.dbPath))
+        {
+            let bundleDBPath = Bundle.main.path(forResource: "NIL", ofType: "db")
+            
+            do{
+                try FileManager.default.copyItem(atPath: bundleDBPath!, toPath: self.dbPath)
+            }
+            catch(let err as NSError)
+            {
+                print(err.localizedDescription)
+            }
+            
+        }
+        
+        
         // Override point for customization after application launch.
         return true
     }
